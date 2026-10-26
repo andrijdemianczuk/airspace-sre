@@ -1,0 +1,5 @@
+# Replace the recipient with the public key printed by bootstrap/02-flux-bootstrap.sh
+creation_rules:
+  - path_regex: .*\.sops\.ya?ml$
+    encrypted_regex: ^(data|stringData)$
+    age: age1REPLACE_WITH_YOUR_PUBLIC_KEY
