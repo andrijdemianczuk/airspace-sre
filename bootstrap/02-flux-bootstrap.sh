@@ -24,12 +24,16 @@ fi
 
 flux check --pre
 
+# Image automation controllers + a read-write deploy key: Flux commits new
+# image tags back to this repo, which is where the error-budget deploy gate sits.
 flux bootstrap github \
   --owner="$GITHUB_USER" \
   --repository="$REPO" \
   --branch=main \
   --path=clusters/beelink \
-  --personal
+  --personal \
+  --components-extra=image-reflector-controller,image-automation-controller \
+  --read-write-key
 
 kubectl -n flux-system create secret generic sops-age \
   --from-file=age.agekey="$AGE_KEY" \
