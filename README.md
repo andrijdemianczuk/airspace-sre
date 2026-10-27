@@ -35,5 +35,8 @@ export GITHUB_TOKEN=... GITHUB_USER=...
 ./bootstrap/02-flux-bootstrap.sh
 ```
 
+## How this was built
+Design decisions, trade-offs and operations are mine and are recorded in `docs/adr/` and `docs/build-log.md`. I used Claude (chat and Claude Code) as a pair programmer for drafting manifests, code and docs, and reviewed everything that landed.
+
 ## Data
 Aircraft data from [adsb.lol](https://adsb.lol), licensed under the Open Database License (ODbL).
