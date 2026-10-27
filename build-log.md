@@ -22,3 +22,19 @@ A dated engineering journal: what I tried, what broke, what I decided. Decisions
 
 **Next**
 - Apply the pending edits listed in `CLAUDE.md`, then run bootstrap on the Beelink and time the first rebuild drill.
+
+---
+
+## 2026-10-26 — Bootstrap fixes, round one
+
+**Done**
+- Added `.gitignore` for `.idea/` and untracked the IDE file that slipped into the first commit.
+- `01-install-k3s.sh`: `tls-san` for `beelink` and the Tailscale MagicDNS name, so kubectl from the Mac passes cert validation over the tailnet. The FQDN is read from `tailscale status` at install time, which keeps my tailnet name out of a public repo — and means `tailscale up` must happen before k3s.
+- `02-flux-bootstrap.sh`: image reflector/automation controllers and a read-write deploy key. Flux will commit new image tags back to Git; that write-back is where the error-budget deploy gate goes.
+
+**Noted**
+- `.sops.yaml` still has a placeholder recipient. Fill it in from the public key 02 prints on first run, before encrypting anything.
+
+**Next**
+- Image build workflow (amd64 → GHCR, SHA tags), ADR 0003 (build once), ADR 0004 (SLOs). None need the Beelink.
+- Then run bootstrap on the box for the first time.

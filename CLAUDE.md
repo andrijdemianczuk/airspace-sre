@@ -30,11 +30,9 @@ adsb.lol OpenAPI, `/v2/point/51.13/-114.01/250`, polled every 5 s. Polled REST, 
 - Error-budget deploy gate sits between "image published" and "manifest updated" (Flux image automation).
 
 ## Pending edits (agreed, not yet made)
-1. `bootstrap/01-install-k3s.sh`: add `tls-san` (`beelink`, `beelink.<tailnet>.ts.net`) to the k3s config so kubectl from the Mac works over Tailscale.
-2. `bootstrap/02-flux-bootstrap.sh`: add `--components-extra=image-reflector-controller,image-automation-controller` and `--read-write-key` to `flux bootstrap github`.
-3. `.github/workflows/`: image build workflow (amd64 → GHCR, SHA tags; build attestations later).
-4. ADR 0003: build-once / decouple development platform from deployment platform.
-5. ADR 0004: SLO targets and reasoning (renumbered from 0003).
+1. `.github/workflows/`: image build workflow (amd64 → GHCR, SHA tags; build attestations later).
+2. ADR 0003: build-once / decouple development platform from deployment platform.
+3. ADR 0004: SLO targets and reasoning (renumbered from 0003).
 
 ## Roadmap
 1. Foundation: k3s, Flux, SOPS/age, Tailscale, rebuild drill (measured RTO in `docs/runbooks/rebuild.md`).
