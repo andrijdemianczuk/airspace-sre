@@ -7,8 +7,9 @@ A small, real service (live ADS-B aircraft data around Calgary/YYC) run the way 
 
 ## Environment
 - **Workstation:** MacBook Pro M1 Pro (ARM), PyCharm. All code and manifests are authored here.
-- **Server:** Beelink SER3, Ryzen 3 3200U (2C/4T, x86_64), 16 GB, Ubuntu, mostly headless. Reached over SSH and Tailscale (`beelink`).
+- **Server:** Beelink SER3, Ryzen 3 3200U (2C/4T, x86_64), 16 GB, Ubuntu, mostly headless. Reached over SSH and Tailscale (`beelink`). Automatic suspend is disabled so it stays reachable.
 - **CPU is the binding constraint**, not RAM. Every workload gets explicit CPU requests/limits. Observability components run in monolithic/single-binary modes with modest retention.
+- **Resuming from the Mac:** Git/GitHub access needs nothing extra. For the cluster: join the Mac to the same tailnet, then `scp andrij@beelink:~/.kube/config ~/.kube/config` and edit its `server:` field from `https://127.0.0.1:6443` to the Tailscale name — that's why `01-install-k3s.sh` puts the Tailscale FQDN in the k3s cert's `tls-san`. SSH to `beelink` over Tailscale works as-is for anything needing a real terminal (the `sudo`-gated bootstrap steps).
 
 ## Non-negotiable conventions
 - **GitOps only.** Flux reconciles `clusters/beelink` → `infrastructure` → `apps`. Nothing is applied to the cluster by hand except bootstrap. kubectl from the Mac is for inspection and debugging.

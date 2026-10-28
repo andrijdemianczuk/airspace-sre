@@ -81,6 +81,8 @@ A dated engineering journal: what I tried, what broke, what I decided. Decisions
 **Done (same day, later)**
 - Ran the real destroy-and-rebuild drill: `k3s-uninstall.sh`, then `01-install-k3s.sh` → `02-flux-bootstrap.sh`. All three Kustomizations `Ready` in **4m59s**. Hit the same `kubectl wait` race from the first bootstrap, confirming it's a real, reproducible bug — fixed `01-install-k3s.sh` to poll for the Node object to register before waiting on `Ready`.
 - The age key never left disk (uninstall only touches k3s, not `$HOME`), so this drill didn't exercise restoring it from the password manager — logged that scope caveat in `docs/runbooks/rebuild.md` rather than overstate what was proven. A true full-host-loss drill is still unmeasured.
+- Disabled automatic suspend on the Beelink so it stays reachable over Tailscale when unattended.
+- Worked out how to resume from the Mac now that the box is bootstrapped: Git needs nothing extra; the cluster needs the Mac on the same tailnet plus a copy of `~/.kube/config` with its `server:` field pointed at the Tailscale name instead of `127.0.0.1`; SSH over Tailscale covers anything `sudo`-gated. Captured in `CLAUDE.md` under Environment.
 
 **Next**
 - Phase 2: the Python ingest service — adsb.lol client with backoff/jitter on 429, OTel instrumentation from the first commit, Postgres storage.
