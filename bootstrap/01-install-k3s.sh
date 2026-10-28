@@ -43,6 +43,9 @@ mkdir -p "$HOME/.kube"
 cp /etc/rancher/k3s/k3s.yaml "$HOME/.kube/config"
 chmod 600 "$HOME/.kube/config"
 
+echo "==> Waiting for node object to register"
+until kubectl get node/beelink >/dev/null 2>&1; do sleep 2; done
+
 echo "==> Waiting for node Ready"
 kubectl wait --for=condition=Ready node/beelink --timeout=180s
 kubectl get nodes -o wide

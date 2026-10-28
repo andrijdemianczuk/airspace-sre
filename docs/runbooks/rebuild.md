@@ -36,4 +36,5 @@ Postgres and observability data live on local PVCs and are destroyed by this dri
 ## Drill log
 | Date | Time to recover | Notes |
 |---|---|---|
-| 2026-10-28 | ~17 min (02:28–02:45 UTC) | First bootstrap, not a verified clean-slate run — `k3s` systemd unit already existed (inactive) before `00-host-prep.sh` ran, origin unclear. Node `creationTimestamp` (02:35:15Z) suggests the datastore itself was fresh. Treat this number as directional; the next drill should destroy first via `k3s-uninstall.sh` for a trustworthy RTO. |
+| 2026-10-28 | ~17 min (02:28–02:45 UTC) | First bootstrap, not a verified clean-slate run — `k3s` systemd unit already existed (inactive) before `00-host-prep.sh` ran, origin unclear. Node `creationTimestamp` (02:35:15Z) suggests the datastore itself was fresh. Treat this number as directional only. |
+| 2026-10-28 | 4m59s (02:49:41–02:54:40 UTC) | Verified: `k3s-uninstall.sh` → `01-install-k3s.sh` → `02-flux-bootstrap.sh`, all three Kustomizations `Ready`. Scope caveat: only `k3s` was destroyed, not the whole host — `00-host-prep.sh` wasn't re-run (tooling already present) and the age key never left disk, so this does **not** exercise restoring the key from the password manager. A true full-host-loss drill (fresh OS, restore age key, run `00`→`01`→`02`) is still unmeasured. |
