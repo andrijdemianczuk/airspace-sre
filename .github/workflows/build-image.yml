@@ -1,0 +1,39 @@
+# Build once, on CI, never on the Mac or the Beelink. See docs/adr/0003-build-once-decouple.md.
+name: Build and publish ingest image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/ingest/**'
+      - '.github/workflows/build-image.yml'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lowercase image repo (GHCR requires it)
+        id: image
+        run: echo "repo=ghcr.io/$(echo '${{ github.repository_owner }}/airspace-ingest' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: apps/ingest
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.image.outputs.repo }}:${{ github.sha }}
+          # Build attestations/provenance deferred — see ADR 0003 consequences.

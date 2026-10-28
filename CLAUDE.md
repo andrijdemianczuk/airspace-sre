@@ -21,18 +21,13 @@ A small, real service (live ADS-B aircraft data around Calgary/YYC) run the way 
 ## Data source
 adsb.lol OpenAPI, `/v2/point/51.13/-114.01/250`, polled every 5 s. Polled REST, not a stream. Keyless today; rate limits/API key may arrive. The client must handle 429 with exponential backoff + jitter and expose backoff state as a metric. Provider-agnostic (airplanes.live shares the schema). See ADR 0002. ODbL attribution in README.
 
-## SLO design (draft — finalize in ADR 0004)
+## SLO design (finalized in [ADR 0004](docs/adr/0004-slo-targets.md))
 - Freshness (time-based): minutes where newest stored snapshot < 30 s old. Target 99% / 30 d.
 - Ingest success: polls fetched+parsed+stored / polls excluding upstream 429/5xx. 99%.
 - Query latency: API reads < 250 ms / all reads. 99%. Use native histograms.
 - adsb.lol dependency SLI: measured and dashboarded, **not** budgeted against us.
 - Burn-rate alerts via Sloth (14.4×/1h page, 6×/6h page, 1×/3d ticket), Alertmanager → ntfy.
 - Error-budget deploy gate sits between "image published" and "manifest updated" (Flux image automation).
-
-## Pending edits (agreed, not yet made)
-1. `.github/workflows/`: image build workflow (amd64 → GHCR, SHA tags; build attestations later).
-2. ADR 0003: build-once / decouple development platform from deployment platform.
-3. ADR 0004: SLO targets and reasoning (renumbered from 0003).
 
 ## Roadmap
 1. Foundation: k3s, Flux, SOPS/age, Tailscale, rebuild drill (measured RTO in `docs/runbooks/rebuild.md`).

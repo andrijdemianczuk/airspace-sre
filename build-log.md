@@ -38,3 +38,17 @@ A dated engineering journal: what I tried, what broke, what I decided. Decisions
 **Next**
 - Image build workflow (amd64 → GHCR, SHA tags), ADR 0003 (build once), ADR 0004 (SLOs). None need the Beelink.
 - Then run bootstrap on the box for the first time.
+
+---
+
+## 2026-10-27 — Closed out the planning backlog
+
+**Done**
+- [ADR 0003](adr/0003-build-once-decouple.md): build-once / decouple dev (Mac, ARM) from deploy (Beelink, amd64). GitHub Actions is the only place images get built; no `:latest` tags.
+- [ADR 0004](adr/0004-slo-targets.md): finalized SLO targets — 99%/30d on freshness, ingest success, and query latency; adsb.lol dependency SLI tracked but not budgeted; Sloth burn-rate windows (14.4×/1h, 6×/6h, 1×/3d); error-budget gate sits between image publish and Flux's manifest commit.
+- `.github/workflows/build-image.yml`: builds `linux/amd64`, pushes to GHCR, tags by git SHA. Scoped to trigger on changes under `apps/ingest/` — that path doesn't exist yet (phase 2), so the workflow is dormant until the ingest service lands.
+- Cleared the "pending edits" backlog out of `CLAUDE.md` now that all three items are done.
+
+**Next**
+- Fill in the real age recipient in `.sops.yaml` (still a placeholder), then run `00`/`01`/`02` on the Beelink for the first time and time the rebuild drill.
+- After that: phase 2, the Python ingest service — client against adsb.lol with backoff/jitter on 429, OTel instrumentation from the first commit, Postgres storage.
