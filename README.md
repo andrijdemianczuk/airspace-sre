@@ -10,7 +10,7 @@ Beelink SER3: Ryzen 3 3200U (2C/4T), 16 GB RAM, 500 GB SSD, Ubuntu. One node, no
 ## Status
 | Phase | Scope | State |
 |---|---|---|
-| 1 | k3s, Flux, SOPS/age, Tailscale, rebuild drill | in progress |
+| 1 | k3s, Flux, SOPS/age, Tailscale, rebuild drill | bootstrapped — verified clean-slate rebuild drill pending |
 | 2 | ADS-B ingest service + Postgres, OTel-instrumented | |
 | 3 | OTel Collector → Prometheus 3 / Loki / Tempo → Grafana | |
 | 4 | SLOs (Sloth), burn-rate alerts, error-budget deploy gate | |
