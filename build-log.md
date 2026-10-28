@@ -86,3 +86,4 @@ A dated engineering journal: what I tried, what broke, what I decided. Decisions
 
 **Next**
 - Phase 2: the Python ingest service — adsb.lol client with backoff/jitter on 429, OTel instrumentation from the first commit, Postgres storage.
+- Interactive architecture explainer (single HTML page) for presentation and review: how k3s, Flux (GitOps + image automation), SOPS/age, Tailscale, GHCR/GitHub Actions and the ingest/Postgres path fit together, plus the dataset's downstream consumers. Build it once Phase 2 lands so it shows the real system, and keep it updated each phase.
